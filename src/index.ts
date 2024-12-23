@@ -7,6 +7,7 @@ import { gameStep } from './gameStep';
 
 const startGame = async () => {
     try {
+        const startTime = Date.now();
         const difficulty = await select<number>({
             message: 'Please select difficulty level:',
             choices: difficultyChoices,
@@ -24,7 +25,12 @@ Guess the number between 1 and 100.
         for (let i = 0; i < difficulty; i++) {
             guessed = await gameStep(numberToGuess, i, difficulty);
 
-            if (guessed) break;
+            if (guessed) {
+                const secondsTook = (Date.now() - startTime) / 1000;
+                logMessage(`It takes you ${secondsTook} sec to win the game`, 'cyan')
+
+                break;
+            }
         }
 
         if (!guessed) { 
